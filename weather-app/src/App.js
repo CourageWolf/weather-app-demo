@@ -5,6 +5,16 @@ const api = {
   base: "https://api.open-meteo.com/v1/forecast",
 };
 
+const weatherInterpretationCodes = new Map([
+  [0, "Clear sky"],
+  [1, "Mainly clear"],
+  [2, "Partly cloudy"],
+  [3, "Overcast"],
+  [61, "Rain"],
+  [71, "Snow"],
+  [95, "Thunderstorm"],
+]);
+
 function App() {
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({});
@@ -12,7 +22,7 @@ function App() {
   const search = (evt) => {
     if (evt.key === "Enter") {
       fetch(
-        `${api.base}?latitude=34.05&longitude=-118.24&hourly=temperature_2m`
+        `${api.base}?latitude=34.05&longitude=-118.24&hourly=temperature_2m&current_weather=true&temperature_unit=fahrenheit`
       )
         .then((res) => res.json())
         .then((result) => {
@@ -57,7 +67,15 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div
+      className={
+        typeof weather.current_weather != "undefined"
+          ? weather.current_weather.temperature > 70
+            ? "app warm"
+            : "app"
+          : "app"
+      }
+    >
       <main>
         <div className="search-box">
           <input
@@ -74,8 +92,19 @@ function App() {
           <div className="date">{dateBuilder(new Date())}</div>
         </div>
         <div className="weather-box">
-          <div className="temp">15%</div>
-          <div className="weather">Sunny</div>
+          <div className="temp">
+            {typeof weather.current_weather != "undefined"
+              ? weather.current_weather.temperature
+              : 0}
+            ℉
+          </div>
+          <div className="weather">
+            {typeof weather.current_weather != "undefined"
+              ? weatherInterpretationCodes.get(
+                  weather.current_weather.weathercode
+                )
+              : ""}
+          </div>
         </div>
       </main>
     </div>
