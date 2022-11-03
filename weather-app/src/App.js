@@ -1,10 +1,13 @@
 import "./App.css";
 import React, { useState } from "react";
 
+// Store API url to get weather data
 const api = {
   base: "https://api.open-meteo.com/v1/forecast",
 };
 
+// Decalare a map from weather codes to their interpretations
+// TO DO: Extend this map to contain all weather codes
 const weatherInterpretationCodes = new Map([
   [0, "Clear sky"],
   [1, "Mainly clear"],
@@ -18,6 +21,7 @@ const weatherInterpretationCodes = new Map([
 function App() {
   const [weather, setWeather] = useState({});
 
+  // Handle API request in a callback
   const getWeather = () => {
     fetch(
       `${api.base}?latitude=34.05&longitude=-118.24&hourly=temperature_2m&current_weather=true&temperature_unit=fahrenheit`
@@ -28,6 +32,7 @@ function App() {
       });
   };
 
+  // Declare a utility function to get today's date
   const dateBuilder = (d) => {
     let months = [
       "January",
@@ -72,6 +77,7 @@ function App() {
       }
     >
       <main>
+        {/* TO DO: Add a dropdown menu or textbox to allow searching by city or by latitude and logitude */}
         <div className="location-box">
           <div className="location">Los Angeles, US</div>
           <div className="date">{dateBuilder(new Date())}</div>
