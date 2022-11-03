@@ -1,5 +1,7 @@
 # Weather App Demo
 
+![Screenshot](screenshot.png)
+
 ## How to Run the App
 
 clone the repo to your computer, cd into 'weather-app'
