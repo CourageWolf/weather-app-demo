@@ -16,21 +16,16 @@ const weatherInterpretationCodes = new Map([
 ]);
 
 function App() {
-  const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({});
 
-  const search = (evt) => {
-    if (evt.key === "Enter") {
-      fetch(
-        `${api.base}?latitude=34.05&longitude=-118.24&hourly=temperature_2m&current_weather=true&temperature_unit=fahrenheit`
-      )
-        .then((res) => res.json())
-        .then((result) => {
-          setWeather(result);
-          setQuery("");
-          console.log(result);
-        });
-    }
+  const getWeather = () => {
+    fetch(
+      `${api.base}?latitude=34.05&longitude=-118.24&hourly=temperature_2m&current_weather=true&temperature_unit=fahrenheit`
+    )
+      .then((res) => res.json())
+      .then((result) => {
+        setWeather(result);
+      });
   };
 
   const dateBuilder = (d) => {
@@ -70,33 +65,22 @@ function App() {
     <div
       className={
         typeof weather.current_weather != "undefined"
-          ? weather.current_weather.temperature > 70
-            ? "app warm"
-            : "app"
+          ? weather.current_weather.temperature < 50
+            ? "app"
+            : "app warm"
           : "app"
       }
     >
       <main>
-        <div className="search-box">
-          <input
-            type="text"
-            className="search-bar"
-            placeholder="Search..."
-            onChange={(e) => setQuery(e.target.value)}
-            value={query}
-            onKeyPress={search}
-          ></input>
-        </div>
         <div className="location-box">
           <div className="location">Los Angeles, US</div>
           <div className="date">{dateBuilder(new Date())}</div>
         </div>
-        <div className="weather-box">
+        <div className="weather-box" onClick={getWeather}>
           <div className="temp">
             {typeof weather.current_weather != "undefined"
-              ? weather.current_weather.temperature
-              : 0}
-            ℉
+              ? `${weather.current_weather.temperature}℉`
+              : "Get Weather"}
           </div>
           <div className="weather">
             {typeof weather.current_weather != "undefined"
