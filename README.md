@@ -16,7 +16,7 @@ cd into 'weather-app/server' then run the following command
 
 ### Run the Front End
 
-From the 'weather-app' director run the following command
+From the 'weather-app' directory run the following command
 
 ### `yarn start`
 
